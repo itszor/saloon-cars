@@ -1,0 +1,76 @@
+{
+ "name": "saloon-cars",
+ "title": "Saloon Cars (Andy Swain / The Fourth Dimension, 1991)",
+ "platform": "acorn-archimedes",
+ "doc": "A recipe: how to turn a user's own copy of the game into a native executable. It holds no game data: the inputs are recognised by content (see $SS/tools/weave.py).",
+ "inputs": {
+  "containers": {
+   "Saloon Cars ()(Fourth Dimension).zip": "52c1e5ed96c1351f821506bb10eba9b0a109eb6c461a762e8d6c3e34b4d6981f"
+  },
+  "formats": [
+   "zip",
+   "directory"
+  ]
+ },
+ "discs": [
+  {
+   "name": "zip",
+   "title": "!Saloon (Cud's 1991 crack, as the TOSEC zip holds it: both discs in one application, SparkFS-imploded)",
+   "known_images": [
+    "473a401e2371d0fe68d319c6f0cdb8905a97a1ba1ce61287c5716dce66f2375b"
+   ],
+   "key_files": {
+    "!Saloon/!Run": "b3fea3956744df50e1ad1739966bb359c37a5705d7a84c87762ade203d13de04",
+    "!Saloon/GameCode/LZWD": "708896752d0db25983cccc5a2b823852000b60ead87e99c1967b56c81bd181e9",
+    "!Saloon/GameCode/CODE": "ac00eccf1269f4e1881b89655eb20528c406af452cdb87ee72a73a143e01e1d4",
+    "!Saloon/GameCode/RACE": "47fb3840cb86ca09ddcf0b8be30f73c18b8694ec3b648836624b9ce9c812e62e",
+    "!Saloon/GameCode/OBJECT": "478cc84d2540ffcfe6258a14f740e6df6ebeea6f6d2c806ac9d6ee7b97a089d3",
+    "!Saloon/GameCode/SALOON": "f3ec08151d13620940df4779118461131740bb1895360ca78e4ca6fee277e4f3",
+    "!Saloon/GameCode/RACECHAR": "905e9d6f2b10830c06e33d0dcfd3090aab386bb1e52967f84bed45241f41ad34",
+    "!Saloon/GameCode/MNU": "f7f7d4d010aef633d6636488212de66fc3f3ad202c2e0b2190496dea66a1cca9",
+    "!Saloon/GameCode/PODIUM": "3ee84371a6f40ef6af4949c187ecfbee8ce92dd7c3d04d3c8fa281d44597617e",
+    "!Saloon/GameCode/MESS": "6e5647259b6184c3f97f61ae46ff27bdc90d064d0bf8e7f6133ad2bb0df2f852",
+    "!Saloon/GameCode/ANIMATE": "7310fe6975c24cdbbe6220fdf9a7613b0e27e6ddbfe5254649620d9ec0d06717",
+    "!Saloon/GameCode/WHEEL": "d2c1b33ee1b99af5cb5e33d125ad80b1a41d0b374cc9320528f520c1a85a0b9f",
+    "!Saloon/GameCode/ASTRA": "b6ccc9216cfe042f4ecb8dc844b6f375846a20a3bffe05549f139766ec226e5f",
+    "!Saloon/GameCode/BMW": "897a0b6082e2e311c7b200cefad94958b6f80817993fde9901812fcbeeae242c",
+    "!Saloon/GameCode/SIERRA": "7def9607e4f0b852657575fdfa0d7eefaa2488da26737f66bdd63466e23dfa59",
+    "!Saloon/Sounds/EN1": "f437c9dcf4d6f12712b8e14526a7904778aa4c78f4a61a264bb516cacd13c386",
+    "!Saloon/Sounds/EN2": "8f6f8161e00bc9da3be0e1f981e66899fa9c2b96c397740424ec59822341004a",
+    "!Saloon/Sounds/EN3": "e549295521b17bb0aa30b0e33fe4237e1edaf05bdc693dc731d54df59a14e8e3",
+    "!Saloon/Sounds/GEAR": "a93ff5c5dd39f88cb8c8ba4f90842708fc9240ef835c1b1638bcd8817ceb5395",
+    "!Saloon/Sounds/SKID": "9fed464c4f483e9189750c42684587ded709fc368ee3ea276fb1c38712729384",
+    "!Saloon/Sounds/SCREAM": "bb9505d39ae66ebbdedc8dbe7162be24320ed25b61634874348307cf2a289aff",
+    "!Saloon/Sounds/THUD": "97d13c42a8361cc0684757aae112cf30fe4e683f154fd4f30e5d11cb3155a90b",
+    "!Saloon/Sounds/HORN": "f18d7c781797c93ad2b68cd74404d9c830d16928f2bcb419f84985fc64e72ef8",
+    "!Saloon/Disc2/FONTS/Trinity/Medium/IntMetrics": "1bf3a485cdbf317d8fa0777cd03acfd1f04474ce9f40976cd7eb4e3f61751333",
+    "!Saloon/Disc2/FONTS/Trinity/Medium/x90y45": "835f02322f466e63bc969d2bbeb0de235a5fd9bf416baf53d0361b69c25d23b2",
+    "!Saloon/Disc2/SYSTEM/DEFAULT": "7fefd6f3bda17b6a20f42d2e558bace73f0170dda5435ee3f85a8b5d1b3f14e7",
+    "!Saloon/Disc2/PLAYERS/DEFAULT": "69f360cc8927383a391f0723e957d6c9aafac1e532b850288407912447b22677",
+    "!Saloon/Disc2/!PRACTICE/MAP": "0de589aa435c4765842ce404684dfb0f591da69a3c38c2d5b2af06375d8ad3b0",
+    "!Saloon/Disc2/!BRANDS/MAP": "ec65ec407d183dd7f7bcccf06b5c3982cf478b89c7d34311118e3c2f199d815c",
+    "!Saloon/Disc2/!SILVER/MAP": "2d73e2f88843dd2b5afbbcd5d3ae85f0f4d6ce48e26de6fcbb6b5e9e8beaf2b2"
+   },
+   "game_dirs": [
+    "!Saloon"
+   ]
+  }
+ ],
+ "build": [
+  "python3 -I \"$WEAVE\" extract . INPUTS",
+  "python3 -I tools/images.py unpack analyse gen",
+  "make -C recomp"
+ ],
+ "output": "recomp/salooncars",
+ "requires": {
+  "superspider": "~/stuff/superspider, or $SUPERSPIDER (dune build): analyse, gen, tools/bas2c.py, tools/weave.py",
+  "libroger": "~/stuff/libroger, or make ROGER=...",
+  "host": [
+   "python3",
+   "ocaml + dune",
+   "gcc",
+   "SDL3 (pkg-config sdl3)"
+  ]
+ },
+ "run": "cd recomp && ./salooncars"
+}
