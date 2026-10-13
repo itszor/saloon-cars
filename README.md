@@ -118,9 +118,15 @@ drives the keyboard controls: stick or D-pad left/right steer, A
 accelerate, B brake, X kickdown, Y handbrake, LB start engine, RB drive,
 LT reverse, RT neutral.
 
-The race paces itself from the vsync count (it moves by the number of
-frames since the last, at most 3), so it runs at its own speed however
-fast the host is: no --mips is needed.
+The race moves by the number of vsyncs since its last frame (at most 3),
+so it keeps time at any speed, but its engine sound doesn't: once a frame
+it sets the engine's amplitude and pitch as a new note, which restarts the
+engine voice's sample. On an 8MHz ARM2 a race frame (~200,000
+instructions) comes about 20 times a second; unthrottled it would be every
+vsync, and the engine only a 50Hz buzz. So game.c sets libroger's CPU speed
+to an ARM2's, 4.5 MIPS (--mips=N to change it, 0 for flat out). The
+engine is silent when switched off: the game sends it BBC amplitude 0, which
+libroger now takes as silence.
 
 A headless scenario (Race Menu, Solo Practice, start the engine, drive,
 handbrake off, accelerate and run off the track at the first bend -

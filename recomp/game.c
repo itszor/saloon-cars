@@ -149,6 +149,13 @@ static struct roger_config config = {
     .wimpslot = 600 * 1024,
     .screen_size = 0x28000,                      /* !Run: Screensize 160K */
     .interpret_gaps = 1,
+    /* An 8MHz ARM2's speed. The race moves by the vsyncs since its last
+     * frame, so it keeps time at any speed, but its engine note doesn't: it
+     * sets the engine's amplitude and pitch once a frame as a new note,
+     * which restarts the engine voice's sample - about 20 times a second on
+     * an ARM2 (a race frame is ~200,000 instructions), 50 unthrottled,
+     * which is only a 50Hz buzz. --mips=N to change it, 0 for flat out */
+    .mips = 4.5,
     .init = init,
 };
 
