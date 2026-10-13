@@ -31,7 +31,7 @@ course disc's contents).
     basic/                   make -C recomp basic: RACE and OBJECT as text, to read
 
 Committed: recipe.json, build.sh, tools/images.py, tools/unpack.c,
-tools/Makefile, recomp/ (Makefile, game.c, bas.c, bas.h),
+tools/Makefile, recomp/ (Makefile, game.c),
 analysis/code.roots (when there are any), this file.
 
 How the game is put together
@@ -61,8 +61,9 @@ it through CODE's own table of entry points.
   interpreter: LZWD_Decompress for CODE, RACE and the voices, and OBJECT's
   squeeze stub. tools/images.py takes the BASIC programs out of their
   stubs.
-- recomp/basic.c: RACE, translated by $SS/tools/bas2c.py, on recomp/bas.c
-  (Chocks Away's runtime, its heap moved to RACE's TOP, &1EC3C). RACE
+- recomp/basic.c: RACE, translated by $SS/tools/bas2c.py, on SuperSpider's
+  BASIC runtime ($SS/runtime/basic_runtime.c), its heap (bas_lomem, in
+  game.c) at RACE's TOP, &1EC3C. RACE
   GOTOs into the middle of other PROCs, lets PROCs run on into the next DEF,
   and sets ON ERROR handlers inside PROCs that GOTO the main program;
   bas2c handles all three (see its docstring).

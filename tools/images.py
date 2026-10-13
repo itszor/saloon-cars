@@ -42,7 +42,8 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 # RACE's heap: TOP (&1EC3C), then PROC_DIM_ARRAYS's DIM START% MEMSIZE% and its
 # FNRES blocks (VAR, ROAD_VAR, PIT_VAR, CARS%, LAPTAB%, RESET%, RSTACK, SKY_SP,
 # GRID%, BOIL%, INST%, BUFFER%) before CODE=FNRES(0), which PROC_LOAD_CODE
-# decompresses CODE into. recomp/bas.c's heap starts at the same TOP.
+# decompresses CODE into. The BASIC runtime's heap (bas_lomem, recomp/game.c)
+# starts at the same TOP.
 LOMEM = 0x1EC3C
 FNRES = [608, 196, 196, 216 * 30 + 1 + 236 + 4 * 32, 0x100, 168, 0x300, 0xA140, 0x100, 0x40, 0x50, 0x800]
 

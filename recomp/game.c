@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bas.h"
+#include "basic_runtime.h"
 
 /* CODE's translation (make regen), at the address RACE's PROC_LOAD_CODE
  * decompresses it to (CODE_ADDRESS, ../tools/images.py). It's loaded up
@@ -28,6 +28,17 @@
 extern const struct roger_image recomp_image;
 
 #include "gen/modules.inc"      /* LZWD and the voice modules; CODE_ADDRESS */
+
+/* the BASIC runtime ($SS/runtime/basic_runtime.c): PAGE (RACE's wrapper runs
+ * BASIC -quit @9000,1EC3C) and the heap above the program (TOP, &1EC3C).
+ * The game's memory is the block DIM START% MEMSIZE%; CODE is LZW-loaded
+ * into it at an address that depends only on the DIMs before it
+ * (CODE_ADDRESS). DIM doesn't clear its blocks (BASIC doesn't): CODE's
+ * translation is in this memory, loaded up front, and the LZWD_Decompress
+ * that loads CODE again must find the words it was translated from there,
+ * not zeros, or every word of it would count as self-modified */
+int32_t bas_page = 0x9000;
+uint32_t bas_lomem = 0x1EC3C;
 
 static const char *const vars[] = {
     "SALOON$DIR", "!Saloon",
@@ -126,6 +137,7 @@ static void setup(void)
 
 static void init(void)
 {
+    bas_sys_idle = 200;                          /* a loop polling SYS "OS_Mouse" lets time pass */
     setup();
     object();
     bas_main();                                  /* RACE */
