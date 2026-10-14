@@ -73,10 +73,8 @@ it through CODE's own table of entry points.
   (gen/modules.inc). Everything translates: a headless run through the
   menus and a demo race, or a practice drive and crash (4e8 instructions),
   interprets only the words CODE modifies as it runs (7,000-11,000
-  instructions). analysis/code.roots holds the gap entries --trace-gaps
-  found (make roots): the branches of an `add pc, pc, r0, lsr #4` on a byte
-  (SuperSpider doesn't know a byte load's range), and one after a branch
-  CODE rewrites.
+  instructions). analysis/code.roots holds the gap entry --trace-gaps
+  found (make roots) after a branch CODE rewrites.
 
 The screen shake
 ----------------
