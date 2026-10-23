@@ -3,10 +3,15 @@ Saloon Cars (Andy Swain / The Fourth Dimension, 1991) - static recompilation
 
 A recipe: this repository holds no game data. It rebuilds the game as a
 native executable from your own copy, recognised by content (recipe.json),
-so it can be shared without distributing the game.
+so it can be shared without distributing the game. Either release: the
+first, or Saloon Cars Deluxe (1992; see "Deluxe" below).
 
     ./build.sh "Saloon Cars ()(Fourth Dimension).zip"     (or a directory holding !Saloon)
+    ./build.sh "Saloon Cars Deluxe (1992) (The Fourth Dimension) F1031900.zip"
+                                                          (or its three .jfd images)
     cd recomp && ./salooncars
+
+A build is of whichever release it was given; build again to change.
 
 build.sh runs recipe.json's steps with SuperSpider's tools/weave.py
 (~/stuff/superspider, or $SUPERSPIDER; $SS below): it extracts the zip,
@@ -31,8 +36,8 @@ course disc's contents).
     basic/                   make -C recomp basic: RACE and OBJECT as text, to read
 
 Committed: recipe.json, build.sh, tools/images.py, tools/unpack.c,
-tools/Makefile, recomp/ (Makefile, game.c),
-analysis/code.roots (when there are any), this file.
+tools/Makefile, recomp/ (Makefile, game.c), analysis/code.roots and
+analysis/code_deluxe.roots (Deluxe's CODE: gap entries), this file.
 
 How the game is put together
 ----------------------------
@@ -134,6 +139,52 @@ screenshots as screenshot-N.bmp):
     ./salooncars --limit=1.2e8 --full-os --script=9000:click:640:592,9300:release,\
     10500:type:49,14000:key:82:3000,19000:key:51:1500,21000:key:85:800,\
     22500:buttons:1,26000:shot,33600:shot,33800:shot,34000:shot
+
+Deluxe
+------
+
+Saloon Cars Deluxe (version 2.0, 1992) is the input as JASPP's set has it,
+`Saloon Cars Deluxe (1992) (The Fourth Dimension) F1031900.zip`: three
+ADFFS images (.jfd) - disc 1 and 2 the two halves of !SALOON, disc 3 the
+course disc (weave.py: extracted/deluxe1-3, game/!SALOON). Andy Swain's
+own release, not a crack: a new CODE (51,725 bytes) and RACE (4,900
+lines), a 2MB version (bigger car pictures, PROTECT.M2), animations
+(FRMS1-4: the car rolling out of the garage at the start), and a test
+track in place of the practice course. RACE runs the 2MB version: its
+test, a DIM of a megabyte, always succeeds here.
+
+Nothing is compressed, but it is protected. !Run2 runs PROTECT.MECHANIC,
+which decrypts itself in layers and inserts a module, ROBIN. ROBIN reads
+four 256-byte sectors from track 79 (side 1) of disc 1 - sectors a flat
+disc image can't hold, which is why the .jfd is needed - and XORs every
+file loaded while it's there with them. CODE, RACE, OBJECT and the eight
+voices are encrypted so; its command *<CHR$160> loads the voices (!Run2)
+and CODE (RACE), and RACE *RMKills it before loading anything else (it
+resets the machine on *Load, *Save, *Cat...). tools/images.py decrypts
+those files into unpacked/ from the image (weave.py keeps it: "raw") and
+game.c stands in for MECHANIC, the *<CHR$160>s and the *RMKill (the same
+scheme as Enter the Realm's version 2, Merlin). It also copies the course
+disc into !SALOON.DISC2, where RACE looks for one first, as Deluxe's
+!Install does for a hard disc - so no disc swapping.
+
+RACE is CHAINed by OBJECT at &8F00 rather than run by a stub at &9000,
+which moves its heap and so CODE (gen/modules.inc: BAS_PAGE, BAS_LOMEM,
+CODE_ADDRESS).
+
+Speed: Deluxe paces itself. A race frame is never less than two vsyncs:
+measured headless, 16.7 frames a second at an ARM2's 4.5 MIPS and exactly
+25 at 10 and at 100 MIPS, its engine note set once a frame with it. So
+game.c gives Deluxe a fast machine's speed, 25 MIPS (the first release
+needs an ARM2's 4.5): it's the same game at any speed past about 10, and
+sounds as it did on an ARM3. (It waits for the vsync in a loop; finite, the
+host sleeps through it rather than spinning: --mips=0 would spin.) RACE also times a BASIC loop at the start to choose
+between two of CODE's drawing paths (RED_SS_B); translated, the loop takes
+no time, so it always takes the fast machine's.
+
+Deluxe keeps its saves in recomp/savedata-deluxe (players, laps, settings:
+the same names as the first release's, in other formats); --save=DIR
+overrides it. The cheat in its JASPP notes (type ANDY or SWAIN at the
+title, then choose an option) adds a Cheat Menu with a frame rate display.
 
 Not done
 --------

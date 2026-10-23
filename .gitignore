@@ -22,4 +22,5 @@ recomp/*.wav
 recomp/vidc.log
 recomp/untranslated.log
 recomp/savedata/
+recomp/savedata-deluxe/
 tools/unpack

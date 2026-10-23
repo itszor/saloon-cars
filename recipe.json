@@ -1,15 +1,18 @@
 {
  "name": "saloon-cars",
- "title": "Saloon Cars (Andy Swain / The Fourth Dimension, 1991)",
+ "title": "Saloon Cars (Andy Swain / The Fourth Dimension, 1991), or Saloon Cars Deluxe (1992)",
  "platform": "acorn-archimedes",
- "doc": "A recipe: how to turn a user's own copy of the game into a native executable. It holds no game data: the inputs are recognised by content (see $SS/tools/weave.py).",
+ "doc": "A recipe: how to turn a user's own copy of the game into a native executable. It holds no game data: the inputs are recognised by content (see $SS/tools/weave.py). Either release: the first (Cud's crack, the TOSEC zip) or Deluxe (version 2, 1992: JASPP's three .jfd images).",
  "inputs": {
   "containers": {
-   "Saloon Cars ()(Fourth Dimension).zip": "52c1e5ed96c1351f821506bb10eba9b0a109eb6c461a762e8d6c3e34b4d6981f"
+   "Saloon Cars ()(Fourth Dimension).zip": "52c1e5ed96c1351f821506bb10eba9b0a109eb6c461a762e8d6c3e34b4d6981f",
+   "Saloon Cars Deluxe (1992) (The Fourth Dimension) F1031900.zip": "2ab681f72a1902fde9deb9852548f7878e60a34a42e91170fea7d8064c085d34"
   },
   "formats": [
    "zip",
-   "directory"
+   "directory",
+   "jfd",
+   "adf"
   ]
  },
  "discs": [
@@ -53,7 +56,95 @@
    },
    "game_dirs": [
     "!Saloon"
+   ],
+   "alternatives": [
+    {
+     "name": "deluxe1",
+     "title": "Saloon Cars Deluxe, disc 1 (JASPP F1031901): !SALOON, its CODE, RACE, OBJECT and voices protected (PROTECT.MECHANIC: the module ROBIN; the key is four 256-byte sectors on track 79, side 1, so its image is kept)",
+     "known_images": [
+      "e96a829e08c5fc53f04d199c659e3d697a35fa25016af5fc53625bd9b1fb8883"
+     ],
+     "key_files": {
+      "!SALOON/!Run": "62155aba1d4798a73147d8dc386446efd9b9f98d0f5faca0f412dc0c412f642d",
+      "!SALOON/!Run2": "548a9bc1d422c91a93a0cdb70ee524771fd030ad12efaa0caf07013da5c13fcf",
+      "!SALOON/SETMODE": "33f6c1cf40cc2bebc29585abef4308f2ff6566206c24ffbfed4a4256ce00f3de",
+      "!SALOON/PROTECT/MECHANIC": "089ce7b5ddfc8c55b88f3823a0ff1c71a48da2a4cb3136f40fe8c58f2262ceff",
+      "!SALOON/PROTECT/CODE": "f6c9872ca5583ce18791ec469419486721ac0e689f742d1862040e38f508abda",
+      "!SALOON/PROTECT/RACE": "500872772291d6af81c0e490f689b4334b9ea65ed0b27df2a7e5da39551d585f",
+      "!SALOON/PROTECT/OBJECT": "6c7281e3a9c831825eab7ad85a7f94d09b36e580cf89d674acc79cf7cdbf091b",
+      "!SALOON/PROTECT/RACECHAR": "649817f48c6eb573f705df5c78af8d3b6b60236a2a212f6c3b42edde2a995fd3",
+      "!SALOON/PROTECT/EN1": "4124d112cd19ba2d9b63a6e5f408d14ad125735b9e74e34946743c603b165918",
+      "!SALOON/PROTECT/EN2": "504058d3ef3eefbad904d84a23ea9c772d874ad8854042b5abf83120c19e4838",
+      "!SALOON/PROTECT/EN3": "ec9266bf040e41148707067f70424945470114f5e4182c79d5b8300dbb933016",
+      "!SALOON/PROTECT/GEAR": "76f5965fa26872ed2dd79e68f26013b6cdf3189bf5a534f59d83d4b91b9e5d57",
+      "!SALOON/PROTECT/SKID": "5514cc8dc337bee0bea65ab2f5f33a481e0166e885f300b949d0ab74c702c8da",
+      "!SALOON/PROTECT/SCREAM": "7da46810a9b7574c2da004d8a242723bbbadf143605996037a0ca5e23774cd5a",
+      "!SALOON/PROTECT/THUD": "9570f6462554a0f7f187abc9f65c4342ef92faeafe6f81070c9fe075ae9cfddd",
+      "!SALOON/PROTECT/HORN": "e4d0d279e5062161889ca4a062142fac44a20a9b62db49a7968c1e278d8a9806",
+      "!SALOON/PROTECT/FRMS1": "47ae836327776c15fb5e0f8eeb853f2e04acb63692f35f5ae6e6706327077494",
+      "!SALOON/PROTECT/FRMS2": "98b0b5d8e05c050409c63bbe9545104c54ee42acb8818a9f95b9c1429d7cec43",
+      "!SALOON/PROTECT/M1/ASTRA": "3f19a4a3b297b833237675dc0a64cbd3f94589b49b52fcf3b6feedbbba0f7aea",
+      "!SALOON/PROTECT/M1/BMW": "aff4dcde41d3d07a22556749b36f138729a6e1fe4ddd62e6d9d5be2c48598fa5",
+      "!SALOON/PROTECT/M1/SIERRA": "346cb4e0bcb5bbe6a6784a3242799bc227feeeca62d5f0533b90808fc51b8c86",
+      "!SALOON/PROTECT/M2/ASTRA": "9a49c5bde08641a29dcb7bbc621ae77d95fcfecade19163d6b492424363237d5"
+     },
+     "game_dirs": [
+      "!SALOON"
+     ],
+     "raw": true
+    }
    ]
+  },
+  {
+   "name": "deluxe2",
+   "title": "Saloon Cars Deluxe, disc 2 (JASPP F1031902): the rest of !SALOON.PROTECT (the 2MB cars, the menus, the animations)",
+   "optional": true,
+   "known_images": [
+    "2da1bcf2d4643a85dc747c9f20ad17ade873c8b18e4d46ced9d9cb6942941d03"
+   ],
+   "key_files": {
+    "!SALOON/PROTECT/ANIMATE": "ab80aee0f76c87b895afd1e5dccab88ba170b64a95499dc1de40271d52a17198",
+    "!SALOON/PROTECT/FRMS3": "fe424a08704958c551246cdc7c975fa13ceb5f4d932f4912aaa72337c3dc8ca1",
+    "!SALOON/PROTECT/FRMS4": "09f52d32a5b3fdac53e51e11dd45cac6eeaa10a6bc43976c3c17c15d34b6d554",
+    "!SALOON/PROTECT/MESS": "52b9f3c7a8d9c9e677175d63be275bca0d9171acdbc231320c08ac7b19990d77",
+    "!SALOON/PROTECT/MNU": "d2ba8d6e2db9433911983b4311291cbf3d4993bee61fe5c1ad9d160c7863c1ef",
+    "!SALOON/PROTECT/PODIUM": "c4ec7f1de7a8b1a36c8e9069cc7d214c7d14c39b57cd2b9bda797f88540b83ea",
+    "!SALOON/PROTECT/M2/BMW": "bda8a51b0488e581830c56b1a064aa813d04ea554996deae87332c2dfb7e1398",
+    "!SALOON/PROTECT/M2/SIERRA": "61e6a4e480e6d6dfa697a9526312386d69453c4d5d8a543a35b34541b4ddee91"
+   },
+   "game_dirs": [
+    "!SALOON"
+   ]
+  },
+  {
+   "name": "deluxe3",
+   "title": "Saloon Cars Deluxe, disc 3 (JASPP F1031903): the course disc (copied into !SALOON.DISC2 by tools/images.py, as !Install would)",
+   "optional": true,
+   "known_images": [
+    "00265182db34d0601646d3c5bb9e4b017cf9fbfc71258415dc4ab499ed69a129"
+   ],
+   "key_files": {
+    "CDISC": "be87d48499a18da53c99844e64395556202e342b84e1e4323b8be126f5470113",
+    "SYSTEM/DEFAULT": "3c5369029831e43bb4b03f6b97fe68e0b4a1d2bcda78c4645d925ee2d9dbfc36",
+    "SYSTEM/M0A": "1fe2e9220c7a6414fd15e3124661b5d48a736b8a93794c28d8a79f9c27fcd564",
+    "SYSTEM/M0B": "8c9259991bde06fafe697e9f8ea6ece71d99cc1a908846bb7300e3ced9460952",
+    "SYSTEM/M1A": "6ff248b20b19793769fbdbe1bb135399deb19ecc2c8db47c8eb8ed5c8e150ad7",
+    "SYSTEM/M1B": "9e45b5b1e6980d546495360e340c3a3577eddc58d50e0ca76f9b08d95c846ba4",
+    "SYSTEM/M2A": "07350e71e8af0ed0b8a1cf5a8dd62358ef72a4a1c3d3b4edd1b40d8c550797b5",
+    "SYSTEM/M2B": "b4a2f272dd2159befe2ca257a784090a6e1ea92891cda8447bf6307e519e8c1b",
+    "SYSTEM/M3A": "855d7bb35ed59c07aaa431720b23913add5ea9344f6fdad88739a92236aa891c",
+    "SYSTEM/M3B": "438c6de1ca1e8bae9e29cfbe49f7cf2abdda3534b76280d1aa2a15f251fa9957",
+    "PLAYERS/!DEFAULT": "69f360cc8927383a391f0723e957d6c9aafac1e532b850288407912447b22677",
+    "FONTS/Trinity/Medium/IntMetrics": "1bf3a485cdbf317d8fa0777cd03acfd1f04474ce9f40976cd7eb4e3f61751333",
+    "FONTS/Trinity/Medium/x90y45": "835f02322f466e63bc969d2bbeb0de235a5fd9bf416baf53d0361b69c25d23b2",
+    "!SILVER/MAP": "2d73e2f88843dd2b5afbbcd5d3ae85f0f4d6ce48e26de6fcbb6b5e9e8beaf2b2",
+    "!BRANDS/MAP": "ec65ec407d183dd7f7bcccf06b5c3982cf478b89c7d34311118e3c2f199d815c",
+    "!TESTTRACK/MAP": "9bee539e9adacc79ff99bd37f28cf747ac24ffaa3ef9b9416150d88480f84a24",
+    "!ASTRA/INST": "4e6f4e11d29681fca0bb2541c853a1534fd973b6fbb82488f4ce606f701a9706",
+    "!BMW/INST": "13b635cf175a7c546a89dd959bbdc11c88f0e25eaf369630926bc61b4abedecb",
+    "!SIERRA/INST": "fe72a753ec446486cced91aed0c6ffce680794e03fe081c4ffd2a1803b7bfeeb"
+   },
+   "game_dirs": []
   }
  ],
  "build": [

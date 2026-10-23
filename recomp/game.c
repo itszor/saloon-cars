@@ -15,7 +15,20 @@
  *
  * Here: the modules are loaded up front (LZWD and the voices, unpacked by
  * ../tools/images.py), setup() does SCREENLOAD, RACECHAR and OBJECT, and
- * bas_main() is RACE. */
+ * bas_main() is RACE.
+ *
+ * Or Saloon Cars Deluxe (1992: DELUXE, from gen/modules.inc - the release
+ * ../tools/images.py found), from JASPP's discs: nothing compressed, but
+ * CODE, RACE, OBJECT and the voices encrypted, and loaded through the
+ * protection's module, ROBIN, which PROTECT.MECHANIC inserts (see
+ * images.py). !Run: SALOON$DIR..SALOON3$DIR, SETMODE (160K of screen),
+ * WimpSlot 630K-1500K; !Run2: MECHANIC, *PRINT RACECHAR, eight *<CHR$160>s
+ * (ROBIN's command: RMLoad the next voice), mode 13, and RUN OBJECT, which
+ * CHAINs RACE. RACE loads CODE with *<CHR$160> address and *RMKills ROBIN.
+ * Here images.py has decrypted them: the voices are loaded up front,
+ * deluxe_cli() stands in for RACE's *<CHR$160> and *RMKill ROBIN, and the
+ * course disc is in !SALOON.DISC2, where RACE looks for it first (as
+ * !Install would put it on a hard disc). */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,22 +43,32 @@ extern const struct roger_image recomp_image;
 #include "gen/modules.inc"      /* LZWD and the voice modules; CODE_ADDRESS */
 
 /* the BASIC runtime ($SS/runtime/basic_runtime.c): PAGE (RACE's wrapper runs
- * BASIC -quit @9000,1EC3C) and the heap above the program (TOP, &1EC3C).
+ * BASIC -quit @9000,1EC3C; Deluxe's OBJECT CHAINs it, at &8F00) and the heap
+ * above the program (TOP: BAS_LOMEM, &1EC3C).
  * The game's memory is the block DIM START% MEMSIZE%; CODE is LZW-loaded
  * into it at an address that depends only on the DIMs before it
  * (CODE_ADDRESS). DIM doesn't clear its blocks (BASIC doesn't): CODE's
  * translation is in this memory, loaded up front, and the LZWD_Decompress
  * that loads CODE again must find the words it was translated from there,
  * not zeros, or every word of it would count as self-modified */
-int32_t bas_page = 0x9000;
-uint32_t bas_lomem = 0x1EC3C;
+int32_t bas_page = BAS_PAGE;
+uint32_t bas_lomem = BAS_LOMEM;
 
+#if DELUXE
+static const char *const vars[] = {
+    "SALOON$DIR", "!SALOON",
+    "SALOON2$DIR", "!SALOON.PROTECT",
+    "SALOON3$DIR", "!SALOON.DISC2",
+    "Disc1$Dir", "!SALOON.PROTECT.",
+    NULL};
+#else
 static const char *const vars[] = {
     "SALOON$DIR", "!Saloon",
     "SALOON2$DIR", "!Saloon.GameCode",
     "SALOON3$DIR", "!Saloon.Disc2",
     "SALOON4$DIR", "!Saloon.Sounds",
     NULL};
+#endif
 static const char *const prefixes[] = {"<SALOON$DIR>.", NULL};
 
 /* OBJECT's DATA statements, read from its program (../unpacked/object.bas,
@@ -119,6 +142,40 @@ static void object(void)
     R[0] = 106; R[1] = 3; roger_swi(0x06);       /* MOUSE ON 3 */
 }
 
+#if DELUXE
+/* ROBIN's command, as RACE's PROC_LOAD_CODE uses it: *<CHR$160> address
+ * loads (and decrypts) CODE there; its first eight, !Run2's, RMLoaded the
+ * voices, which are loaded already. RACE then *RMKills it */
+static int deluxe_cli(const char *c)
+{
+    while (*c == ' ' || *c == '*') c++;
+    if (!strcasecmp(c, "RMKILL ROBIN")) return 1;
+    if ((uint8_t)c[0] != 0xA0) return 0;
+    uint32_t a = (uint32_t)strtoul(c + 1, NULL, 16);
+    FILE *f = fopen("../unpacked/code", "rb");
+    if (!f || !a || fread(&PB(a), 1, CODE_LENGTH, f) != CODE_LENGTH) {
+        perror("../unpacked/code");
+        exit(1);
+    }
+    fclose(f);
+    return 1;
+}
+
+/* !Run and !Run2's steps before OBJECT: SETMODE's 160K of screen is the
+ * config's; MECHANIC and the *<CHR$160>s insert the voices, loaded already */
+static void setup(void)
+{
+    bas_cli = deluxe_cli;
+    mode(13);                                    /* ECHO <22><&8D> */
+    oscli_c("PRINT <SALOON2$DIR>.RACECHAR");
+    mode(13);
+    oscli_c("FX 112,1");
+    oscli_c("FX 113,2");
+    vdu(12, -1);
+    oscli_c("FX 112,1");
+    oscli_c("FX 113,2");
+}
+#else
 /* !Run's steps before OBJECT */
 static void setup(void)
 {
@@ -134,6 +191,7 @@ static void setup(void)
     /* Sounds.Sounds: the voice modules are loaded already (gen/modules.inc) */
     oscli_c("PRINT <SALOON2$DIR>.RACECHAR");
 }
+#endif
 
 static void init(void)
 {
@@ -145,7 +203,7 @@ static void init(void)
 }
 
 static struct roger_config config = {
-    .title = "Saloon Cars (recompiled)",
+    .title = DELUXE ? "Saloon Cars Deluxe (recompiled)" : "Saloon Cars (recompiled)",
     /* controllers: the keyboard controls (Control Menu, Keyboard - the
      * mouse is the default): Z/X steer, Page Down accelerates, Copy (End)
      * brakes, Delete kickdown, up/down change gear (D-pad); and S starts
@@ -158,17 +216,36 @@ static struct roger_config config = {
     .dir_prefixes = prefixes,
     .variables = vars,
     .initial_mode = 13,
-    .wimpslot = 600 * 1024,
-    .screen_size = 0x28000,                      /* !Run: Screensize 160K */
+    /* Deluxe's !Run: WimpSlot -min 630K -max 1500K - the most, as on a 2MB
+     * machine (its RACE then loads the 2MB version's cars) */
+    .wimpslot = (DELUXE ? 1500 : 600) * 1024,
+    .screen_size = 0x28000,                      /* !Run: Screensize 160K (Deluxe: SETMODE) */
     .interpret_gaps = 1,
     /* An 8MHz ARM2's speed. The race moves by the vsyncs since its last
      * frame, so it keeps time at any speed, but its engine note doesn't: it
      * sets the engine's amplitude and pitch once a frame as a new note,
      * which restarts the engine voice's sample - about 20 times a second on
      * an ARM2 (a race frame is ~200,000 instructions), 50 unthrottled,
-     * which is only a 50Hz buzz. --mips=N to change it, 0 for flat out */
-    .mips = 4.5,
+     * which is only a 50Hz buzz. --mips=N to change it, 0 for flat out.
+     * Deluxe paces itself: a race frame is at least two vsyncs (25 a
+     * second, its notes with them, as on an ARM3) however fast the CPU. It
+     * gets a fast machine's speed, at which it always keeps to that: past
+     * about 10 MIPS it's the same game, and finite, the host sleeps through
+     * its wait for the vsync rather than spinning in it */
+    .mips = DELUXE ? 25 : 4.5,
     .init = init,
 };
 
-int main(int argc, char **argv) { roger_main(argc, argv, &config); }
+/* Deluxe saves (players, lap times, the settings) in a directory of its own,
+ * not the first release's savedata/ (the same names, in other formats);
+ * --save=DIR still overrides it */
+int main(int argc, char **argv)
+{
+    char *args[argc + 2];
+    int n = 0;
+    args[n++] = argv[0];
+    if (DELUXE) args[n++] = "--save=savedata-deluxe";
+    for (int k = 1; k < argc; k++) args[n++] = argv[k];
+    args[n] = NULL;
+    roger_main(n, args, &config);
+}
